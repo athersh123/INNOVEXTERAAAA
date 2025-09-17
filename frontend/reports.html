@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Reports - FRA Atlas</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <!-- Navigation Sidebar -->
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <div class="brand">
+          <div class="logo">
+            <i class="fas fa-tree"></i>
+          </div>
+          <div class="brand-text">
+            <h1>FRA Atlas</h1>
+            <span class="version">v2.0</span>
+          </div>
+        </div>
+        <button class="sidebar-toggle" id="sidebarToggle">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+
+      <div class="sidebar-content">
+        <ul class="nav-menu">
+          <li class="nav-item">
+            <a href="dashboard.html" class="nav-link">
+              <i class="fas fa-tachometer-alt"></i>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="atlas.html" class="nav-link">
+              <i class="fas fa-map"></i>
+              <span>FRA Atlas</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="decisions.html" class="nav-link">
+              <i class="fas fa-lightbulb"></i>
+              <span>Decision Support</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="documents.html" class="nav-link">
+              <i class="fas fa-file-alt"></i>
+              <span>Documents</span>
+            </a>
+          </li>
+          <li class="nav-item active">
+            <a href="reports.html" class="nav-link">
+              <i class="fas fa-chart-bar"></i>
+              <span>Reports</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="admin.html" class="nav-link">
+              <i class="fas fa-cog"></i>
+              <span>Admin</span>
+            </a>
+          </li>
+        </ul>
+
+        <div class="sidebar-footer">
+          <div class="user-info">
+            <div class="user-avatar">
+              <i class="fas fa-user"></i>
+            </div>
+            <div class="user-details">
+              <span class="user-name">Admin User</span>
+              <span class="user-role">System Administrator</span>
+            </div>
+          </div>
+          <button class="help-btn">
+            <i class="fas fa-question-circle"></i>
+            <span>Help & Support</span>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Top Header -->
+      <header class="top-header">
+        <div class="header-left">
+          <h2 class="page-title">Reports</h2>
+          <div class="breadcrumb">
+            <span>Home</span>
+            <i class="fas fa-chevron-right"></i>
+            <span>Reports</span>
+          </div>
+        </div>
+        
+        <div class="header-center">
+          <div class="search-container">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" id="reportSearch" class="search-input" placeholder="Search reports..." />
+            <button class="search-btn">
+              <i class="fas fa-filter"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <button class="action-btn primary" onclick="generateReport()">
+            <i class="fas fa-plus"></i>
+            New Report
+          </button>
+          <button class="action-btn secondary" onclick="scheduleReport()">
+            <i class="fas fa-clock"></i>
+            Schedule
+          </button>
+          <div class="notifications">
+            <button class="notification-btn">
+              <i class="fas fa-bell"></i>
+              <span class="notification-badge">3</span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Reports Content -->
+      <div class="reports-container">
+        <div class="reports-header">
+          <h2>Reports</h2>
+          <p>Generate and view comprehensive reports</p>
+        </div>
+        
+        <div class="reports-content">
+          <div class="report-filters">
+            <div class="filter-group">
+              <label>Report Type</label>
+              <select id="reportType">
+                <option value="summary">Summary Report</option>
+                <option value="detailed">Detailed Report</option>
+                <option value="geographic">Geographic Report</option>
+                <option value="status">Status Report</option>
+                <option value="trends">Trends Analysis</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label>Date Range</label>
+              <select id="dateRange">
+                <option value="last30">Last 30 Days</option>
+                <option value="last90">Last 90 Days</option>
+                <option value="lastyear">Last Year</option>
+                <option value="all">All Time</option>
+                <option value="custom">Custom Range</option>
+              </select>
+            </div>
+            <div class="filter-group">
+              <label>Format</label>
+              <select id="reportFormat">
+                <option value="pdf">PDF</option>
+                <option value="excel">Excel</option>
+                <option value="csv">CSV</option>
+                <option value="html">HTML</option>
+              </select>
+            </div>
+            <button class="generate-btn" onclick="generateReport()">
+              <i class="fas fa-chart-bar"></i>
+              Generate Report
+            </button>
+          </div>
+          
+          <div class="report-preview" id="reportPreview">
+            <div class="empty-state">
+              <i class="fas fa-chart-line"></i>
+              <p>Select filters and generate a report to view it here</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Reports -->
+        <div class="recent-reports">
+          <h3>Recent Reports</h3>
+          <div class="reports-grid">
+            <div class="report-card">
+              <div class="report-icon">
+                <i class="fas fa-chart-pie"></i>
+              </div>
+              <div class="report-info">
+                <h4>Monthly Summary Report</h4>
+                <p>Generated on Jan 15, 2024</p>
+                <div class="report-actions">
+                  <button class="action-btn small" onclick="viewReport('monthly-summary')">
+                    <i class="fas fa-eye"></i>
+                    View
+                  </button>
+                  <button class="action-btn small secondary" onclick="downloadReport('monthly-summary')">
+                    <i class="fas fa-download"></i>
+                    Download
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <div class="report-card">
+              <div class="report-icon">
+                <i class="fas fa-map"></i>
+              </div>
+              <div class="report-info">
+                <h4>Geographic Analysis</h4>
+                <p>Generated on Jan 10, 2024</p>
+                <div class="report-actions">
+                  <button class="action-btn small" onclick="viewReport('geographic-analysis')">
+                    <i class="fas fa-eye"></i>
+                    View
+                  </button>
+                  <button class="action-btn small secondary" onclick="downloadReport('geographic-analysis')">
+                    <i class="fas fa-download"></i>
+                    Download
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <div class="report-card">
+              <div class="report-icon">
+                <i class="fas fa-trending-up"></i>
+              </div>
+              <div class="report-info">
+                <h4>Trends Analysis</h4>
+                <p>Generated on Jan 5, 2024</p>
+                <div class="report-actions">
+                  <button class="action-btn small" onclick="viewReport('trends-analysis')">
+                    <i class="fas fa-eye"></i>
+                    View
+                  </button>
+                  <button class="action-btn small secondary" onclick="downloadReport('trends-analysis')">
+                    <i class="fas fa-download"></i>
+                    Download
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/reports.js"></script>
+  </body>
+</html>
+

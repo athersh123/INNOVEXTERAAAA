@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Administration - FRA Atlas</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <!-- Navigation Sidebar -->
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <div class="brand">
+          <div class="logo">
+            <i class="fas fa-tree"></i>
+          </div>
+          <div class="brand-text">
+            <h1>FRA Atlas</h1>
+            <span class="version">v2.0</span>
+          </div>
+        </div>
+        <button class="sidebar-toggle" id="sidebarToggle">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+
+      <div class="sidebar-content">
+        <ul class="nav-menu">
+          <li class="nav-item">
+            <a href="dashboard.html" class="nav-link">
+              <i class="fas fa-tachometer-alt"></i>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="atlas.html" class="nav-link">
+              <i class="fas fa-map"></i>
+              <span>FRA Atlas</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="decisions.html" class="nav-link">
+              <i class="fas fa-lightbulb"></i>
+              <span>Decision Support</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="documents.html" class="nav-link">
+              <i class="fas fa-file-alt"></i>
+              <span>Documents</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="reports.html" class="nav-link">
+              <i class="fas fa-chart-bar"></i>
+              <span>Reports</span>
+            </a>
+          </li>
+          <li class="nav-item active">
+            <a href="admin.html" class="nav-link">
+              <i class="fas fa-cog"></i>
+              <span>Admin</span>
+            </a>
+          </li>
+        </ul>
+
+        <div class="sidebar-footer">
+          <div class="user-info">
+            <div class="user-avatar">
+              <i class="fas fa-user"></i>
+            </div>
+            <div class="user-details">
+              <span class="user-name">Admin User</span>
+              <span class="user-role">System Administrator</span>
+            </div>
+          </div>
+          <button class="help-btn">
+            <i class="fas fa-question-circle"></i>
+            <span>Help & Support</span>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Top Header -->
+      <header class="top-header">
+        <div class="header-left">
+          <h2 class="page-title">Administration</h2>
+          <div class="breadcrumb">
+            <span>Home</span>
+            <i class="fas fa-chevron-right"></i>
+            <span>Admin</span>
+          </div>
+        </div>
+        
+        <div class="header-center">
+          <div class="search-container">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" id="adminSearch" class="search-input" placeholder="Search users, settings..." />
+            <button class="search-btn">
+              <i class="fas fa-filter"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <button class="action-btn primary" onclick="addUser()">
+            <i class="fas fa-user-plus"></i>
+            Add User
+          </button>
+          <button class="action-btn secondary" onclick="backupSystem()">
+            <i class="fas fa-database"></i>
+            Backup
+          </button>
+          <div class="notifications">
+            <button class="notification-btn">
+              <i class="fas fa-bell"></i>
+              <span class="notification-badge">3</span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Admin Content -->
+      <div class="admin-container">
+        <div class="admin-header">
+          <h2>Administration</h2>
+          <p>Manage system settings and user accounts</p>
+        </div>
+        
+        <div class="admin-content">
+          <div class="admin-tabs">
+            <button class="tab-btn active" onclick="showAdminTab('users')">
+              <i class="fas fa-users"></i>
+              Users
+            </button>
+            <button class="tab-btn" onclick="showAdminTab('settings')">
+              <i class="fas fa-cog"></i>
+              Settings
+            </button>
+            <button class="tab-btn" onclick="showAdminTab('logs')">
+              <i class="fas fa-file-alt"></i>
+              Logs
+            </button>
+            <button class="tab-btn" onclick="showAdminTab('security')">
+              <i class="fas fa-shield-alt"></i>
+              Security
+            </button>
+          </div>
+          
+          <div class="admin-tab-content" id="adminTabContent">
+            <!-- Users Tab -->
+            <div class="users-tab">
+              <div class="tab-header">
+                <h3>User Management</h3>
+                <button class="action-btn primary" onclick="addUser()">
+                  <i class="fas fa-plus"></i>
+                  Add User
+                </button>
+              </div>
+              
+              <div class="users-table">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Role</th>
+                      <th>Status</th>
+                      <th>Last Login</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <div class="user-info">
+                          <div class="user-avatar small">
+                            <i class="fas fa-user"></i>
+                          </div>
+                          <span>Admin User</span>
+                        </div>
+                      </td>
+                      <td>admin@fratlas.com</td>
+                      <td><span class="role-badge admin">Administrator</span></td>
+                      <td><span class="status-badge active">Active</span></td>
+                      <td>2 hours ago</td>
+                      <td>
+                        <button class="action-btn small" onclick="editUser(1)">
+                          <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn small danger" onclick="deleteUser(1)">
+                          <i class="fas fa-trash"></i>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <div class="user-info">
+                          <div class="user-avatar small">
+                            <i class="fas fa-user"></i>
+                          </div>
+                          <span>John Doe</span>
+                        </div>
+                      </td>
+                      <td>john@fratlas.com</td>
+                      <td><span class="role-badge user">User</span></td>
+                      <td><span class="status-badge active">Active</span></td>
+                      <td>1 day ago</td>
+                      <td>
+                        <button class="action-btn small" onclick="editUser(2)">
+                          <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn small danger" onclick="deleteUser(2)">
+                          <i class="fas fa-trash"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/admin.js"></script>
+  </body>
+</html>
+

@@ -1,0 +1,38 @@
+[
+  {
+    "parcel_id": "P-001",
+    "holder_id": "H-100",
+    "holder_name": "Laxmi Bai",
+    "area_ha": 1.2,
+    "land_use": ["farmland"],
+    "village": "Bhainsdehi",
+    "state": "MP",
+    "geometry": {"type": "Point", "coordinates": [77.6, 21.6]},
+    "claim_status": "Approved"
+  },
+  {
+    "parcel_id": "P-002",
+    "holder_id": "H-200",
+    "holder_name": "Ramesh Kumar",
+    "area_ha": 0.5,
+    "land_use": ["cfr", "pond"],
+    "village": "Malkangiri",
+    "state": "OD",
+    "geometry": {"type": "Point", "coordinates": [82.2, 18.4]},
+    "claim_status": "Approved"
+  },
+  {
+    "parcel_id": "P-003",
+    "holder_id": "H-300",
+    "holder_name": "Sita Devi",
+    "area_ha": 0.0,
+    "land_use": ["forest"],
+    "village": "Wayanad",
+    "state": "KL",
+    "geometry": {"type": "Point", "coordinates": [76.1, 11.6]},
+    "claim_status": "Pending"
+  }
+]
+
+
+

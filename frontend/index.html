@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FRA Atlas - Forest Rights Management System</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="css/styles.css" />
+    <script>
+      // Redirect to dashboard
+      window.location.href = 'dashboard.html';
+    </script>
+  </head>
+  <body>
+    <!-- Navigation Sidebar -->
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <div class="brand">
+          <div class="logo">
+            <i class="fas fa-tree"></i>
+          </div>
+          <div class="brand-text">
+            <h1>FRA Atlas</h1>
+            <span class="version">v2.0</span>
+          </div>
+        </div>
+        <button class="sidebar-toggle" id="sidebarToggle">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+
+      <div class="sidebar-content">
+        <ul class="nav-menu">
+          <li class="nav-item active">
+            <a href="#dashboard" class="nav-link">
+              <i class="fas fa-tachometer-alt"></i>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#atlas" class="nav-link" id="openAtlas">
+              <i class="fas fa-map"></i>
+              <span>FRA Atlas</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#decisions" class="nav-link" id="decisionSupport">
+              <i class="fas fa-lightbulb"></i>
+              <span>Decision Support</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#documents" class="nav-link" id="documents">
+              <i class="fas fa-file-alt"></i>
+              <span>Documents</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#reports" class="nav-link">
+              <i class="fas fa-chart-bar"></i>
+              <span>Reports</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#admin" class="nav-link" id="admin">
+              <i class="fas fa-cog"></i>
+              <span>Admin</span>
+            </a>
+          </li>
+        </ul>
+
+        <div class="sidebar-footer">
+          <div class="user-info">
+            <div class="user-avatar">
+              <i class="fas fa-user"></i>
+            </div>
+            <div class="user-details">
+              <span class="user-name">Admin User</span>
+              <span class="user-role">System Administrator</span>
+            </div>
+          </div>
+          <button class="help-btn">
+            <i class="fas fa-question-circle"></i>
+            <span>Help & Support</span>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Top Header -->
+      <header class="top-header">
+        <div class="header-left">
+          <h2 class="page-title">Dashboard Overview</h2>
+          <div class="breadcrumb">
+            <span>Home</span>
+            <i class="fas fa-chevron-right"></i>
+            <span>Dashboard</span>
+          </div>
+        </div>
+        
+        <div class="header-center">
+          <div class="search-container">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" id="search" class="search-input" placeholder="Search claims, villages, documents..." />
+            <button class="search-btn">
+              <i class="fas fa-filter"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <button class="action-btn primary" id="btnOpenAtlas">
+            <i class="fas fa-map"></i>
+            Open Atlas
+          </button>
+          <button class="action-btn secondary" id="btnDSS">
+            <i class="fas fa-lightbulb"></i>
+            Decision Support
+          </button>
+          <button class="action-btn" id="btnLogin" onclick="window.location.href='login.html'">
+            <i class="fas fa-sign-in-alt"></i>
+            Login
+          </button>
+          <div class="notifications">
+            <button class="notification-btn">
+              <i class="fas fa-bell"></i>
+              <span class="notification-badge">3</span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Dashboard Content -->
+      <div class="dashboard-content">
+        <!-- Metrics Cards -->
+        <section class="metrics-section">
+          <div class="metrics-grid">
+            <div class="metric-card primary">
+              <div class="metric-icon">
+                <i class="fas fa-file-alt"></i>
+              </div>
+              <div class="metric-content">
+                <h3 class="metric-title">Total Claims</h3>
+                <div class="metric-value" id="totalClaims">—</div>
+                <p class="metric-subtitle">Across all states</p>
+                <div class="metric-trend positive">
+                  <i class="fas fa-arrow-up"></i>
+                  <span>+12% from last month</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="metric-card success">
+              <div class="metric-icon">
+                <i class="fas fa-check-circle"></i>
+              </div>
+              <div class="metric-content">
+                <h3 class="metric-title">Approval Rate</h3>
+                <div class="metric-value" id="approvalRate">—</div>
+                <p class="metric-subtitle">Success rate</p>
+                <div class="metric-trend positive">
+                  <i class="fas fa-arrow-up"></i>
+                  <span>+5% from last month</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="metric-card warning">
+              <div class="metric-icon">
+                <i class="fas fa-clock"></i>
+              </div>
+              <div class="metric-content">
+                <h3 class="metric-title">Pending Claims</h3>
+                <div class="metric-value" id="pendingClaims">—</div>
+                <p class="metric-subtitle">Awaiting review</p>
+                <div class="metric-trend negative">
+                  <i class="fas fa-arrow-down"></i>
+                  <span>-8% from last month</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="metric-card info">
+              <div class="metric-icon">
+                <i class="fas fa-home"></i>
+              </div>
+              <div class="metric-content">
+                <h3 class="metric-title">Villages Covered</h3>
+                <div class="metric-value" id="villagesCovered">—</div>
+                <p class="metric-subtitle">Tribal settlements</p>
+                <div class="metric-trend positive">
+                  <i class="fas fa-arrow-up"></i>
+                  <span>+3 new villages</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Charts Section -->
+        <section class="charts-section">
+          <div class="chart-container">
+            <div class="chart-header">
+              <h3>Claims Status Distribution</h3>
+              <div class="chart-actions">
+                <button class="chart-btn active">All Time</button>
+                <button class="chart-btn">This Year</button>
+                <button class="chart-btn">Last 6 Months</button>
+              </div>
+            </div>
+            <div class="chart-content">
+              <div class="donut" id="donut"></div>
+            </div>
+          </div>
+
+          <div class="chart-container">
+            <div class="chart-header">
+              <h3>Monthly Claims Processing</h3>
+              <div class="chart-actions">
+                <button class="chart-btn active">Monthly</button>
+                <button class="chart-btn">Quarterly</button>
+                <button class="chart-btn">Yearly</button>
+              </div>
+            </div>
+            <div class="chart-content">
+              <canvas id="trend" height="200"></canvas>
+            </div>
+          </div>
+        </section>
+
+        <!-- Map Section -->
+        <section class="map-section">
+          <div class="map-container">
+            <div class="map-header">
+              <h3>Geographic Distribution</h3>
+              <div class="map-controls">
+                <button class="map-btn">
+                  <i class="fas fa-layer-group"></i>
+                  Layers
+                </button>
+                <button class="map-btn">
+                  <i class="fas fa-download"></i>
+                  Export
+                </button>
+                <button class="map-btn">
+                  <i class="fas fa-expand"></i>
+                  Fullscreen
+                </button>
+              </div>
+            </div>
+            <div id="map" class="map"></div>
+          </div>
+
+          <div class="details-panel" id="details">
+            <div class="details-header">
+              <h3>Claim Details</h3>
+              <button class="close-details">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            <div class="details-content" id="detailsBody">
+              <div class="empty-state">
+                <i class="fas fa-map-marker-alt"></i>
+                <p>Click a parcel or search a holder to view details</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
+
+
+
