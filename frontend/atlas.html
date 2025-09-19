@@ -154,27 +154,17 @@
             <!-- Interactive Filters Section -->
             <div class="filters-panel" style="margin:1rem 0 1.5rem 0; padding:1rem; background:#f5faff; border-radius:1rem; display:flex; gap:1.5rem; align-items:center; flex-wrap:wrap;">
               <select id="filterState" style="padding:0.6rem 1rem; border-radius:0.7rem; border:1px solid #bbdefb; min-width:150px;">
-                <option value="">State</option>
-                <option value="Maharashtra">Maharashtra</option>
+                <option value="">All States</option>
+                <option value="Odisha">Odisha</option>
+                <option value="Tripura">Tripura</option>
+                <option value="Telangana">Telangana</option>
                 <option value="Madhya Pradesh">Madhya Pradesh</option>
               </select>
               <select id="filterDistrict" style="padding:0.6rem 1rem; border-radius:0.7rem; border:1px solid #bbdefb; min-width:150px;">
-                <option value="">District</option>
-                <option value="Nagpur">Nagpur</option>
-                <option value="Bhopal">Bhopal</option>
-              </select>
-              <select id="filterCity" style="padding:0.6rem 1rem; border-radius:0.7rem; border:1px solid #bbdefb; min-width:150px;">
-                <option value="">City</option>
-                <option value="Nagpur">Nagpur</option>
-                <option value="Bhopal">Bhopal</option>
+                <option value="">All Districts</option>
               </select>
               <select id="filterVillage" style="padding:0.6rem 1rem; border-radius:0.7rem; border:1px solid #bbdefb; min-width:150px;">
-                <option value="">Village</option>
-                <option value="Village A">Village A</option>
-                <option value="Village B">Village B</option>
-                <option value="Village C">Village C</option>
-                <option value="Village D">Village D</option>
-                <option value="Village E">Village E</option>
+                <option value="">All Villages</option>
               </select>
               <button id="filterBtn" style="padding:0.6rem 1.5rem; background:#1976d2; color:#fff; border:none; border-radius:0.7rem; font-weight:600;">Apply Filters</button>
             </div>
@@ -189,10 +179,30 @@
                 <i class="fas fa-times"></i>
               </button>
             </div>
-            <div class="details-content" id="detailsBody">
-              <div class="empty-state">
-                <i class="fas fa-map-marker-alt"></i>
-                <p>Click a parcel or search a holder to view details</p>
+            <div class="details-content" id="detailsBody" style="padding: 1.5rem; background: #f5faff;">
+              <div class="claim-card" style="background: linear-gradient(135deg, #ffffff, #f9fcff); border-radius: 1rem; box-shadow: 0 8px 24px rgba(25, 118, 210, 0.1); overflow: hidden; border: 1px solid #e3f2fd;">
+                <div class="claim-card-header" style="background: linear-gradient(135deg, #1976d2, #1a237e); color: #fff; padding: 1.5rem; text-align: center;">
+                  <h4 style="margin: 0; font-size: 1.3rem; font-weight: 700;">Claim ID: CFR-OD-RYG-54321</h4>
+                  <span style="display: inline-block; background: rgba(255,255,255,0.2); padding: 0.4rem 1rem; border-radius: 1rem; font-weight: 600; font-size: 0.9rem; margin-top: 0.5rem;">Status: Approved</span>
+                </div>
+                <div class="claim-card-body" style="padding: 1.5rem;">
+                  <div style="margin-bottom: 1.5rem; text-align: center;">
+                    <i class="fas fa-user-circle" style="font-size: 4rem; color: #1976d2; margin-bottom: 0.5rem;"></i>
+                    <h5 style="color: #1a237e; margin: 0; font-size: 1.2rem; font-weight: 600;">Sita Devi</h5>
+                  </div>
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                    <div><strong>Village:</strong> Gunupur</div>
+                    <div><strong>District:</strong> Rayagada</div>
+                    <div><strong>State:</strong> Odisha</div>
+                  </div>
+                  <div>
+                    <h5 style="color: #1a237e; margin-bottom: 1rem; font-size: 1.1rem; text-align: center; border-top: 1px solid #e3f2fd; padding-top: 1.5rem;">Associated Documents</h5>
+                    <ul style="list-style: none; padding: 0; display: flex; justify-content: center; gap: 1rem;">
+                      <li><a href="#" style="color: #1976d2; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 0.3rem;"><i class="fas fa-file-alt" style="font-size: 1.5rem;"></i><span>Resolution</span></a></li>
+                      <li><a href="#" style="color: #1976d2; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 0.3rem;"><i class="fas fa-file-alt" style="font-size: 1.5rem;"></i><span>Land Records</span></a></li>
+                    </ul>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -227,17 +237,40 @@
       document.addEventListener('DOMContentLoaded', function() {
         // Sample data for demonstration
         const claims = [
-          { name: 'Village A', lat: 21.1, lng: 78.9, status: 'Approved', state: 'Maharashtra', district: 'Nagpur', city: 'Nagpur', village: 'Village A' },
-          { name: 'Village B', lat: 22.2, lng: 77.5, status: 'Pending', state: 'Madhya Pradesh', district: 'Bhopal', city: 'Bhopal', village: 'Village B' },
-          { name: 'Village C', lat: 19.8, lng: 75.3, status: 'Rejected', state: 'Maharashtra', district: 'Nagpur', city: 'Nagpur', village: 'Village C' },
-          { name: 'Village D', lat: 23.5, lng: 80.2, status: 'Approved', state: 'Madhya Pradesh', district: 'Bhopal', city: 'Bhopal', village: 'Village D' },
-          { name: 'Village E', lat: 18.7, lng: 76.1, status: 'Pending', state: 'Maharashtra', district: 'Nagpur', city: 'Nagpur', village: 'Village E' }
+            // Odisha
+            { id: 1, name: 'Sita Devi', lat: 18.35, lng: 82.4, status: 'Approved', state: 'Odisha', district: 'Malkangiri', village: 'Padeiguda', size: 5.2 },
+            { id: 2, name: 'Ramesh Pangi', lat: 19.75, lng: 83.45, status: 'Pending', state: 'Odisha', district: 'Rayagada', village: 'Niyamgiri', size: 2.5 },
+            { id: 3, name: 'Gomati Juang', lat: 21.4, lng: 85.2, status: 'Rejected', state: 'Odisha', district: 'Keonjhar', village: 'Gonasika', size: 10.0 },
+
+            // Tripura
+            { id: 4, name: 'Mangal Reang', lat: 23.8, lng: 91.8, status: 'Approved', state: 'Tripura', district: 'North Tripura', village: 'Kanchanpur', size: 7.8 },
+            { id: 5, name: 'Anjali Chakma', lat: 23.3, lng: 92.1, status: 'Pending', state: 'Tripura', district: 'Dhalai', village: 'Gandacharra', size: 4.0 },
+
+            // Telangana
+            { id: 6, name: 'Korra Sodi', lat: 18.0, lng: 80.8, status: 'Approved', state: 'Telangana', district: 'Bhadradri Kothagudem', village: 'Bhadrachalam', size: 6.5 },
+            { id: 7, name: 'Tekam Raju', lat: 19.2, lng: 78.5, status: 'Rejected', state: 'Telangana', district: 'Adilabad', village: 'Indervelly', size: 3.1 },
+
+            // Madhya Pradesh
+            { id: 8, name: 'Kailash Bhil', lat: 22.1, lng: 74.9, status: 'Pending', state: 'Madhya Pradesh', district: 'Jhabua', village: 'Jhabua Town', size: 8.5 },
+            { id: 9, name: 'Lalsu Baiga', lat: 22.7, lng: 81.0, status: 'Approved', state: 'Madhya Pradesh', district: 'Dindori', village: 'Chada', size: 12.0 },
+            { id: 10, name: 'Phoolan Sahariya', lat: 25.1, lng: 77.3, status: 'Pending', state: 'Madhya Pradesh', district: 'Sheopur', village: 'Pali', size: 1.5 }
         ];
-        let map = L.map('osm-map').setView([20.5937, 78.9629], 5);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        let map = L.map('osm-map').setView([22.0, 80.0], 5.5);
+        let osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
           maxZoom: 19,
           attribution: '© OpenStreetMap'
         }).addTo(map);
+        let satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+        });
+
+        let baseMaps = {
+            "Street Map": osmLayer,
+            "Satellite Map": satelliteLayer
+        };
+
+        L.control.layers(baseMaps).addTo(map);
+
         let markers = [];
         function renderMarkers(data) {
           markers.forEach(m => map.removeLayer(m));
@@ -250,22 +283,64 @@
               fillColor: color,
               fillOpacity: 0.7
             }).addTo(map);
-            marker.bindPopup(`<b>${claim.name}</b><br>Status: ${claim.status}<br>State: ${claim.state}<br>District: ${claim.district}<br>City: ${claim.city}<br>Village: ${claim.village}`);
+            marker.bindPopup(`<b>${claim.name}</b><br>Status: ${claim.status}`);
+            
+            marker.on('click', () => {
+                updateDetails(claim);
+            });
+
             markers.push(marker);
           });
         }
+
+        function updateDetails(claim) {
+            const detailsBody = document.getElementById('detailsBody');
+            const statusColor = claim.status === 'Approved' ? '#4CAF50' : claim.status === 'Pending' ? '#FFC107' : '#F44336';
+            const statusText = claim.status;
+
+            detailsBody.innerHTML = `
+              <div class="claim-card" style="background: linear-gradient(135deg, #ffffff, #f9fcff); border-radius: 1rem; box-shadow: 0 8px 24px rgba(25, 118, 210, 0.1); overflow: hidden; border: 1px solid #e3f2fd;">
+                <div class="claim-card-header" style="background: linear-gradient(135deg, #1976d2, #1a237e); color: #fff; padding: 1.5rem; text-align: center;">
+                  <h4 style="margin: 0; font-size: 1.3rem; font-weight: 700;">Claim ID: CFR-${claim.state.substring(0,2).toUpperCase()}-${claim.district.substring(0,3).toUpperCase()}-${claim.id}</h4>
+                  <span style="display: inline-block; background: ${statusColor}; padding: 0.4rem 1rem; border-radius: 1rem; font-weight: 600; font-size: 0.9rem; margin-top: 0.5rem;">Status: ${statusText}</span>
+                </div>
+                <div class="claim-card-body" style="padding: 1.5rem;">
+                  <div style="margin-bottom: 1.5rem; text-align: center;">
+                    <i class="fas fa-user-circle" style="font-size: 4rem; color: #1976d2; margin-bottom: 0.5rem;"></i>
+                    <h5 style="color: #1a237e; margin: 0; font-size: 1.2rem; font-weight: 600;">${claim.name}</h5>
+                  </div>
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                    <div><strong>Village:</strong> ${claim.village}</div>
+                    <div><strong>District:</strong> ${claim.district}</div>
+                    <div><strong>State:</strong> ${claim.state}</div>
+                  </div>
+                  <div>
+                    <h5 style="color: #1a237e; margin-bottom: 1rem; font-size: 1.1rem; text-align: center; border-top: 1px solid #e3f2fd; padding-top: 1.5rem;">Associated Documents</h5>
+                    <ul style="list-style: none; padding: 0; display:.flex; justify-content: center; gap: 1rem;">
+                      <li><a href="#" style="color: #1976d2; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 0.3rem;"><i class="fas fa-file-alt" style="font-size: 1.5rem;"></i><span>Resolution</span></a></li>
+                      <li><a href="#" style="color: #1976d2; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 0.3rem;"><i class="fas fa-file-alt" style="font-size: 1.5rem;"></i><span>Land Records</span></a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            `;
+            document.getElementById('details').style.display = 'block';
+        }
+
+        function closeDetails() {
+            document.getElementById('details').style.display = 'none';
+        }
+
         renderMarkers(claims);
         document.getElementById('filterBtn').onclick = function() {
           const state = document.getElementById('filterState').value;
           const district = document.getElementById('filterDistrict').value;
-          const city = document.getElementById('filterCity').value;
           const village = document.getElementById('filterVillage').value;
           const filtered = claims.filter(c => {
             const matchState = !state || c.state === state;
             const matchDistrict = !district || c.district === district;
-            const matchCity = !city || c.city === city;
             const matchVillage = !village || c.village === village;
-            return matchState && matchDistrict && matchCity && matchVillage;
+            return matchState && matchDistrict && matchVillage;
           });
           renderMarkers(filtered);
         };
