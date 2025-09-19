@@ -151,7 +151,35 @@
                 </button>
               </div>
             </div>
-            <div id="map" class="map"></div>
+            <!-- Interactive Filters Section -->
+            <div class="filters-panel" style="margin:1rem 0 1.5rem 0; padding:1rem; background:#f5faff; border-radius:1rem; display:flex; gap:1.5rem; align-items:center; flex-wrap:wrap;">
+              <select id="filterState" style="padding:0.6rem 1rem; border-radius:0.7rem; border:1px solid #bbdefb; min-width:150px;">
+                <option value="">State</option>
+                <option value="Maharashtra">Maharashtra</option>
+                <option value="Madhya Pradesh">Madhya Pradesh</option>
+              </select>
+              <select id="filterDistrict" style="padding:0.6rem 1rem; border-radius:0.7rem; border:1px solid #bbdefb; min-width:150px;">
+                <option value="">District</option>
+                <option value="Nagpur">Nagpur</option>
+                <option value="Bhopal">Bhopal</option>
+              </select>
+              <select id="filterCity" style="padding:0.6rem 1rem; border-radius:0.7rem; border:1px solid #bbdefb; min-width:150px;">
+                <option value="">City</option>
+                <option value="Nagpur">Nagpur</option>
+                <option value="Bhopal">Bhopal</option>
+              </select>
+              <select id="filterVillage" style="padding:0.6rem 1rem; border-radius:0.7rem; border:1px solid #bbdefb; min-width:150px;">
+                <option value="">Village</option>
+                <option value="Village A">Village A</option>
+                <option value="Village B">Village B</option>
+                <option value="Village C">Village C</option>
+                <option value="Village D">Village D</option>
+                <option value="Village E">Village E</option>
+              </select>
+              <button id="filterBtn" style="padding:0.6rem 1.5rem; background:#1976d2; color:#fff; border:none; border-radius:0.7rem; font-weight:600;">Apply Filters</button>
+            </div>
+            <div id="osm-map" style="height:500px; width:100%; border-radius:1rem;"></div>
+            <!-- Move script to end of body for proper loading -->
           </div>
 
           <div class="details-panel" id="details">
@@ -195,6 +223,53 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <script src="js/api.js"></script>
     <script src="js/atlas.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Sample data for demonstration
+        const claims = [
+          { name: 'Village A', lat: 21.1, lng: 78.9, status: 'Approved', state: 'Maharashtra', district: 'Nagpur', city: 'Nagpur', village: 'Village A' },
+          { name: 'Village B', lat: 22.2, lng: 77.5, status: 'Pending', state: 'Madhya Pradesh', district: 'Bhopal', city: 'Bhopal', village: 'Village B' },
+          { name: 'Village C', lat: 19.8, lng: 75.3, status: 'Rejected', state: 'Maharashtra', district: 'Nagpur', city: 'Nagpur', village: 'Village C' },
+          { name: 'Village D', lat: 23.5, lng: 80.2, status: 'Approved', state: 'Madhya Pradesh', district: 'Bhopal', city: 'Bhopal', village: 'Village D' },
+          { name: 'Village E', lat: 18.7, lng: 76.1, status: 'Pending', state: 'Maharashtra', district: 'Nagpur', city: 'Nagpur', village: 'Village E' }
+        ];
+        let map = L.map('osm-map').setView([20.5937, 78.9629], 5);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          maxZoom: 19,
+          attribution: '© OpenStreetMap'
+        }).addTo(map);
+        let markers = [];
+        function renderMarkers(data) {
+          markers.forEach(m => map.removeLayer(m));
+          markers = [];
+          data.forEach(claim => {
+            let color = claim.status === 'Approved' ? 'green' : claim.status === 'Pending' ? 'orange' : 'red';
+            let marker = L.circleMarker([claim.lat, claim.lng], {
+              radius: 9,
+              color: color,
+              fillColor: color,
+              fillOpacity: 0.7
+            }).addTo(map);
+            marker.bindPopup(`<b>${claim.name}</b><br>Status: ${claim.status}<br>State: ${claim.state}<br>District: ${claim.district}<br>City: ${claim.city}<br>Village: ${claim.village}`);
+            markers.push(marker);
+          });
+        }
+        renderMarkers(claims);
+        document.getElementById('filterBtn').onclick = function() {
+          const state = document.getElementById('filterState').value;
+          const district = document.getElementById('filterDistrict').value;
+          const city = document.getElementById('filterCity').value;
+          const village = document.getElementById('filterVillage').value;
+          const filtered = claims.filter(c => {
+            const matchState = !state || c.state === state;
+            const matchDistrict = !district || c.district === district;
+            const matchCity = !city || c.city === city;
+            const matchVillage = !village || c.village === village;
+            return matchState && matchDistrict && matchCity && matchVillage;
+          });
+          renderMarkers(filtered);
+        };
+      });
+    </script>
   </body>
 </html>
-
