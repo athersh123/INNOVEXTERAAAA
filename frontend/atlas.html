@@ -1,4 +1,4 @@
-<!doctype html>
+\<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -18,12 +18,17 @@
           </div>
           <div class="brand-text">
             <h1>FRA Atlas</h1>
-            <span class="version">v2.0</span>
+            <span class="version">Decision Support System</span>
           </div>
         </div>
-        <button class="sidebar-toggle" id="sidebarToggle">
-          <i class="fas fa-bars"></i>
-        </button>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <button class="sidebar-toggle" id="sidebarToggle">
+            <i class="fas fa-bars"></i>
+          </button>
+          <a href="login.html" title="Login" class="nav-login">
+            <i class="fas fa-sign-in-alt"></i>
+          </a>
+        </div>
       </div>
 
       <div class="sidebar-content">
@@ -283,7 +288,7 @@
               fillColor: color,
               fillOpacity: 0.7
             }).addTo(map);
-            marker.bindPopup(<b>${claim.name}</b><br>Status: ${claim.status});
+            marker.bindPopup(`<b>${claim.name}</b><br>Status: ${claim.status}`);
             
             marker.on('click', () => {
                 updateDetails(claim);
@@ -316,7 +321,7 @@
                   </div>
                   <div>
                     <h5 style="color: #1a237e; margin-bottom: 1rem; font-size: 1.1rem; text-align: center; border-top: 1px solid #e3f2fd; padding-top: 1.5rem;">Associated Documents</h5>
-                    <ul style="list-style: none; padding: 0; display:.flex; justify-content: center; gap: 1rem;">
+                    <ul style="list-style: none; padding: 0; display: flex; justify-content: center; gap: 1rem;">
                       <li><a href="#" style="color: #1976d2; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 0.3rem;"><i class="fas fa-file-alt" style="font-size: 1.5rem;"></i><span>Resolution</span></a></li>
                       <li><a href="#" style="color: #1976d2; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 0.3rem;"><i class="fas fa-file-alt" style="font-size: 1.5rem;"></i><span>Land Records</span></a></li>
                     </ul>
@@ -330,6 +335,8 @@
         function closeDetails() {
             document.getElementById('details').style.display = 'none';
         }
+
+  // Always show details panel (do not hide by default)
 
         renderMarkers(claims);
         document.getElementById('filterBtn').onclick = function() {

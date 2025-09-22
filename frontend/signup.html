@@ -7,24 +7,71 @@
     <link rel="stylesheet" href="css/styles.css" />
   </head>
   <body>
-    <div class="auth-container">
-      <div class="auth-card">
-        <h2 class="auth-title">Sign Up</h2>
+    <div class="auth-bg" style="background: linear-gradient(120deg, var(--primary), var(--primary-light) 60%, var(--bg-secondary) 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+      <div class="auth-card" style="box-shadow: var(--shadow-lg); background: var(--bg-card); border-radius: var(--radius-xl); padding: 2.5rem 2rem; min-width: 420px;">
+        <h2 class="auth-title" style="color:var(--primary);text-align:center;">Create an Account</h2>
+        <p style="text-align:center;color:var(--text-muted);margin-bottom:1rem;">Use your government registered email to sign up</p>
         <form id="signupForm">
-          <div class="form-group">
-            <label for="newUsername">Username</label>
-            <input type="text" id="newUsername" name="newUsername" required />
+          <div class="form-row" style="display:flex;gap:0.75rem;">
+            <div class="form-group" style="flex:1;">
+              <label for="firstName">First Name</label>
+              <input type="text" id="firstName" name="firstName" required />
+            </div>
+            <div class="form-group" style="flex:1;">
+              <label for="lastName">Last Name</label>
+              <input type="text" id="lastName" name="lastName" required />
+            </div>
           </div>
           <div class="form-group">
-            <label for="newPassword">Password</label>
-            <input type="password" id="newPassword" name="newPassword" required />
+            <label for="govEmail">Government Registered Email</label>
+            <input type="email" id="govEmail" name="govEmail" placeholder="name@domain.gov.in or name@gov.example" required />
           </div>
-          <button type="submit" class="action-btn primary">Sign Up</button>
+          <div class="form-row" style="display:flex;align-items:center;gap:0.75rem;">
+            <div class="form-group" style="flex:1;">
+              <label for="captchaInput">Enter Captcha</label>
+              <input type="text" id="captchaInput" name="captchaInput" placeholder="Enter captcha" required />
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;">
+              <div id="captchaBox" style="background:var(--bg-tertiary);padding:0.5rem 0.75rem;border-radius:6px;border:1px solid var(--border-light);font-weight:600;">0000</div>
+              <button type="button" id="refreshCaptcha" class="action-btn" style="margin-top:0.5rem;padding:0.25rem 0.5rem;">Refresh</button>
+            </div>
+          </div>
+          <button type="submit" class="action-btn primary" style="width:100%;margin-top:1rem;">Sign Up</button>
         </form>
-        <p class="auth-link">Already have an account? <a href="login.html">Login</a></p>
-        <div id="signupError" class="error-message" style="display:none;"></div>
+        <p class="auth-link" style="text-align:center;margin-top:1rem;">Already have an account? <a href="login.html">Login</a></p>
+        <div id="signupError" class="error-message" style="display:none;margin-top:0.75rem;text-align:center;"></div>
       </div>
     </div>
-    <script src="js/app.js"></script>
+    <script>
+      // Simple captcha generator and validation
+      function generateCaptcha(){
+        // 5-digit alphanumeric captcha
+        const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+        let c = '';
+        for(let i=0;i<5;i++) c += chars.charAt(Math.floor(Math.random()*chars.length));
+        return c;
+      }
+      const captchaBox = document.getElementById('captchaBox');
+      const refreshBtn = document.getElementById('refreshCaptcha');
+      let currentCaptcha = generateCaptcha();
+      captchaBox.textContent = currentCaptcha;
+      refreshBtn.addEventListener('click', ()=>{ currentCaptcha = generateCaptcha(); captchaBox.textContent = currentCaptcha; });
+
+      const signupForm = document.getElementById('signupForm');
+      const signupError = document.getElementById('signupError');
+      signupForm.addEventListener('submit', function(e){
+        e.preventDefault();
+        signupError.style.display = 'none';
+        const first = document.getElementById('firstName').value.trim();
+        const last = document.getElementById('lastName').value.trim();
+        const email = document.getElementById('govEmail').value.trim();
+        const entered = document.getElementById('captchaInput').value.trim();
+        if(!first || !last){ signupError.textContent = 'Please enter your full name.'; signupError.style.display='block'; return; }
+        const govPattern = /(?:\bgov\b|gov\.|nic\.)/i;
+        if(!govPattern.test(email)){ signupError.textContent = 'Please use a government-registered email (contains gov or nic).'; signupError.style.display='block'; return; }
+        if(entered.toUpperCase() !== currentCaptcha){ signupError.textContent = 'Captcha does not match. Please try again.'; signupError.style.display='block'; return; }
+        alert('Signup submitted — replace this with real registration logic.');
+      });
+    </script>
   </body>
 </html>
