@@ -1,14 +1,42 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Decision Support System - FRA Atlas</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link rel="stylesheet" href="css/styles.css" />
-  </head>
-  <body>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Decision Support System</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <style>
+    .dss-container { max-width: 1200px; margin: 2rem auto; padding: 2rem; background: var(--bg-card); border-radius: var(--radius-xl); box-shadow: var(--shadow-lg); }
+    .dss-header h1 { font-size: 2rem; font-weight: bold; color: var(--primary); }
+    .dss-header p { color: var(--text-muted); margin-top: 0.5rem; }
+    .dss-search { display: flex; gap: 1rem; margin-bottom: 2rem; }
+    .dss-search input { flex: 1; padding: 0.75rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-light); }
+    .dss-search button { padding: 0.75rem 1.5rem; border-radius: var(--radius-md); background: var(--primary); color: #fff; border: none; cursor: pointer; }
+    .dss-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 2rem; }
+    .dss-card { background: var(--bg-tertiary); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); margin-bottom: 1.5rem; }
+    .dss-card-header { padding: 1rem 1.5rem; border-bottom: 1px solid var(--border-light); }
+    .dss-card-title { font-weight: 600; font-size: 1.1rem; }
+    .dss-card-desc { color: var(--text-muted); font-size: 0.95rem; }
+    .dss-card-content { padding: 1rem 1.5rem; }
+    .dss-record-list { max-height: 400px; overflow-y: auto; }
+    .dss-record { padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-light); margin-bottom: 0.75rem; cursor: pointer; transition: background 0.2s; }
+    .dss-record.selected, .dss-record:hover { background: var(--accent); color: #fff; border-color: var(--primary); }
+    .dss-badge { display: inline-block; padding: 0.2rem 0.7rem; border-radius: var(--radius-md); font-size: 0.85rem; margin-left: 0.5rem; }
+    .dss-badge.approved { background: var(--accent); color: #fff; }
+    .dss-badge.pending { background: var(--warning); color: #fff; }
+    .dss-badge.rejected { background: var(--danger); color: #fff; }
+    .dss-scheme { display: flex; justify-content: space-between; align-items: center; padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-light); margin-bottom: 1rem; }
+    .dss-scheme .dss-badge { margin-left: 0; }
+    .dss-scheme .dss-apply { margin-top: 0.5rem; }
+    .dss-scheme.eligible { background: var(--bg-secondary); }
+    .dss-scheme.not-eligible { background: var(--bg-tertiary); }
+    .dss-details { margin-bottom: 2rem; }
+    .dss-details-row { margin-bottom: 0.5rem; }
+    .dss-details-label { color: var(--text-muted); font-size: 0.95rem; margin-right: 0.5rem; }
+    .dss-details-value { font-weight: 500; }
+  </style>
+</head>
+<body>
     <!-- Navigation Sidebar -->
     <nav class="sidebar">
       <div class="sidebar-header">
@@ -25,61 +53,24 @@
           <i class="fas fa-bars"></i>
         </button>
       </div>
-
       <div class="sidebar-content">
         <ul class="nav-menu">
-          <li class="nav-item">
-            <a href="dashboard.html" class="nav-link">
-              <i class="fas fa-tachometer-alt"></i>
-              <span>Dashboard</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="atlas.html" class="nav-link">
-              <i class="fas fa-map"></i>
-              <span>FRA Atlas</span>
-            </a>
-          </li>
-          <li class="nav-item active">
-            <a href="decisions.html" class="nav-link">
-              <i class="fas fa-lightbulb"></i>
-              <span>Decision Support</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="documents.html" class="nav-link">
-              <i class="fas fa-file-alt"></i>
-              <span>Documents</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="reports.html" class="nav-link">
-              <i class="fas fa-chart-bar"></i>
-              <span>Reports</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="admin.html" class="nav-link">
-              <i class="fas fa-cog"></i>
-              <span>Admin</span>
-            </a>
-          </li>
+          <li class="nav-item"><a href="dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+          <li class="nav-item"><a href="atlas.html" class="nav-link"><i class="fas fa-map"></i><span>FRA Atlas</span></a></li>
+          <li class="nav-item active"><a href="decisions.html" class="nav-link"><i class="fas fa-lightbulb"></i><span>Decision Support</span></a></li>
+          <li class="nav-item"><a href="documents.html" class="nav-link"><i class="fas fa-file-alt"></i><span>Documents</span></a></li>
+          <li class="nav-item"><a href="reports.html" class="nav-link"><i class="fas fa-chart-bar"></i><span>Reports</span></a></li>
+          <li class="nav-item"><a href="admin.html" class="nav-link"><i class="fas fa-cog"></i><span>Admin</span></a></li>
         </ul>
-
         <div class="sidebar-footer">
           <div class="user-info">
-            <div class="user-avatar">
-              <i class="fas fa-user"></i>
-            </div>
+            <div class="user-avatar"><i class="fas fa-user"></i></div>
             <div class="user-details">
               <span class="user-name">Admin User</span>
               <span class="user-role">System Administrator</span>
             </div>
           </div>
-          <button class="help-btn">
-            <i class="fas fa-question-circle"></i>
-            <span>Help & Support</span>
-          </button>
+          <button class="help-btn"><i class="fas fa-question-circle"></i><span>Help & Support</span></button>
         </div>
       </div>
     </nav>
@@ -96,25 +87,17 @@
             <span>Decision Support</span>
           </div>
         </div>
-        
         <div class="header-center">
           <div class="search-container">
             <i class="fas fa-search search-icon"></i>
-            <input type="text" id="dssSearch" class="search-input" placeholder="Search by holder name or ID..." />
-            <button class="search-btn" onclick="searchDSS()">
-              <i class="fas fa-search"></i>
-            </button>
+            <input type="text" id="searchInput" class="search-input" placeholder="Search by owner name, village, or record number..." />
+            <button class="search-btn" onclick="filterRecords()"><i class="fas fa-filter"></i></button>
           </div>
         </div>
-
         <div class="header-right">
-          <button class="action-btn primary" onclick="generateRecommendations()">
-            <i class="fas fa-magic"></i>
-            Generate Report
-          </button>
-          <button class="action-btn secondary" onclick="viewHistory()">
-            <i class="fas fa-history"></i>
-            View History
+          <button class="action-btn" id="btnLogin" onclick="window.location.href='login.html'">
+            <i class="fas fa-sign-in-alt"></i>
+            Login
           </button>
           <div class="notifications">
             <button class="notification-btn">
@@ -126,64 +109,129 @@
       </header>
 
       <!-- DSS Content -->
-      <div class="dss-container">
+      <div class="dss-container" style="max-width:1200px;margin:2rem auto;">
         <div class="dss-header">
-          <h2>Decision Support System</h2>
-          <p>Get recommendations for forest rights claims and eligible schemes</p>
+          <h1>Decision Support System</h1>
+          <p>Verify benefit scheme eligibility for landholders and tribal communities</p>
         </div>
-        
-        <div class="dss-content">
-          <div class="search-section">
-            <div class="search-container">
-              <i class="fas fa-search search-icon"></i>
-              <input type="text" id="holderSearch" class="search-input" placeholder="Search by holder name or ID..." />
-              <button class="search-btn" onclick="searchDSS()">
-                <i class="fas fa-search"></i>
-              </button>
+        <div class="dss-grid">
+          <div>
+            <div class="dss-card">
+              <div class="dss-card-header">
+                <div class="dss-card-title">Land Records</div>
+                <div class="dss-card-desc">Select a record to check benefit eligibility</div>
+              </div>
+              <div class="dss-card-content">
+                <div id="recordList" class="dss-record-list"></div>
+              </div>
             </div>
           </div>
-          
-          <div class="results-section" id="dssResults">
-            <div class="empty-state">
-              <i class="fas fa-lightbulb"></i>
-              <p>Search for a holder to get decision support recommendations</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Quick Actions -->
-        <div class="quick-actions">
-          <h3>Quick Actions</h3>
-          <div class="action-grid">
-            <button class="action-card" onclick="checkEligibility()">
-              <i class="fas fa-check-circle"></i>
-              <h4>Check Eligibility</h4>
-              <p>Verify scheme eligibility for claims</p>
-            </button>
-            <button class="action-card" onclick="generateReport()">
-              <i class="fas fa-file-alt"></i>
-              <h4>Generate Report</h4>
-              <p>Create detailed analysis report</p>
-            </button>
-            <button class="action-card" onclick="viewRecommendations()">
-              <i class="fas fa-lightbulb"></i>
-              <h4>View Recommendations</h4>
-              <p>See AI-powered suggestions</p>
-            </button>
-            <button class="action-card" onclick="exportData()">
-              <i class="fas fa-download"></i>
-              <h4>Export Data</h4>
-              <p>Download analysis results</p>
-            </button>
+          <div>
+            <div id="detailsPanel"></div>
           </div>
         </div>
       </div>
     </main>
-
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-    <script src="js/api.js"></script>
-    <script src="js/decisions.js"></script>
-  </body>
+  <script>
+    // Dummy data for demonstration
+    const landRecords = [
+      { id: 1, ownerName: 'Ravi Kumar', village: 'Rampur', district: 'Bhopal', state: 'MP', areaAcres: 2.5, landType: 'agricultural', claimStatus: 'approved', recordNumber: 'REC123', fatherName: 'Suresh Kumar', surveyNumber: 'SV001' },
+      { id: 2, ownerName: 'Meena Devi', village: 'Lakhanpur', district: 'Indore', state: 'MP', areaAcres: 1.2, landType: 'forest', claimStatus: 'pending', recordNumber: 'REC124', fatherName: 'Ram Lal', surveyNumber: 'SV002' },
+      { id: 3, ownerName: 'Ajay Singh', village: 'Kishanpur', district: 'Jabalpur', state: 'MP', areaAcres: 3.8, landType: 'agricultural', claimStatus: 'approved', recordNumber: 'REC125', fatherName: 'Mahesh Singh', surveyNumber: 'SV003' },
+    ];
+    const benefitSchemes = [
+      { id: 'PM_KISAN', schemeName: 'PM Kisan', schemeCode: 'PM_KISAN', description: 'Income support for farmers', maxLandLimit: 2, incomeLimit: 60000 },
+      { id: 'TRIBAL_BENEFIT', schemeName: 'Tribal Benefit', schemeCode: 'TRIBAL_BENEFIT', description: 'Support for tribal landholders', minLandLimit: 1 },
+    ];
+    let filteredRecords = landRecords;
+    let selectedRecord = null;
+    let eligibilityResults = {};
+    function renderRecords() {
+      const list = document.getElementById('recordList');
+      list.innerHTML = '';
+      if (filteredRecords.length === 0) {
+        list.innerHTML = `<div class='p-6 text-center text-muted-foreground'>No records found</div>`;
+        return;
+      }
+      filteredRecords.forEach(record => {
+        const div = document.createElement('div');
+        div.className = 'dss-record' + (selectedRecord && selectedRecord.id === record.id ? ' selected' : '');
+        div.innerHTML = `<div><strong>${record.ownerName}</strong> <span class='dss-badge ${record.claimStatus}'>${record.claimStatus}</span></div>
+          <div style='font-size:0.95rem;color:var(--text-muted);'>${record.village}, ${record.district}</div>
+          <div style='font-size:0.95rem;color:var(--text-muted);'>${record.areaAcres} acres • ${record.landType}</div>`;
+        div.onclick = () => { selectedRecord = record; renderDetails(); renderRecords(); };
+        list.appendChild(div);
+      });
+    }
+    function filterRecords() {
+      const term = document.getElementById('searchInput').value.toLowerCase();
+      filteredRecords = landRecords.filter(r =>
+        r.ownerName.toLowerCase().includes(term) ||
+        r.village.toLowerCase().includes(term) ||
+        r.recordNumber.toLowerCase().includes(term)
+      );
+      renderRecords();
+      renderDetails();
+    }
+    function renderDetails() {
+      const panel = document.getElementById('detailsPanel');
+      if (!selectedRecord) {
+        panel.innerHTML = `<div class='dss-card'><div class='dss-card-content' style='text-align:center;color:var(--text-muted);padding:3rem;'>Select a land record to check benefit scheme eligibility</div></div>`;
+        return;
+      }
+      panel.innerHTML = `<div class='dss-card dss-details'><div class='dss-card-header'><div class='dss-card-title'>${selectedRecord.ownerName}</div><div class='dss-card-desc'>Record Number: ${selectedRecord.recordNumber}</div></div><div class='dss-card-content'>
+        <div class='dss-details-row'><span class='dss-details-label'>Village:</span> <span class='dss-details-value'>${selectedRecord.village}</span></div>
+        <div class='dss-details-row'><span class='dss-details-label'>District:</span> <span class='dss-details-value'>${selectedRecord.district}</span></div>
+        <div class='dss-details-row'><span class='dss-details-label'>State:</span> <span class='dss-details-value'>${selectedRecord.state}</span></div>
+        <div class='dss-details-row'><span class='dss-details-label'>Area:</span> <span class='dss-details-value'>${selectedRecord.areaAcres} acres</span></div>
+        <div class='dss-details-row'><span class='dss-details-label'>Land Type:</span> <span class='dss-details-value'>${selectedRecord.landType}</span></div>
+        <div class='dss-details-row'><span class='dss-details-label'>Father's Name:</span> <span class='dss-details-value'>${selectedRecord.fatherName}</span></div>
+        <div class='dss-details-row'><span class='dss-details-label'>Survey No:</span> <span class='dss-details-value'>${selectedRecord.surveyNumber}</span></div>
+        <div class='dss-details-row'><span class='dss-details-label'>Status:</span> <span class='dss-badge ${selectedRecord.claimStatus}'>${selectedRecord.claimStatus}</span></div>
+        <button class='dss-search' style='margin-top:1rem;' onclick='checkEligibility()'>Check Eligibility</button>
+      </div></div>
+      <div class='dss-card'><div class='dss-card-header'><div class='dss-card-title'>Benefit Scheme Eligibility</div><div class='dss-card-desc'>Eligibility status for government benefit schemes</div></div><div class='dss-card-content' id='schemeResults'></div></div>`;
+      renderSchemes();
+    }
+    function checkEligibility() {
+      eligibilityResults = {};
+      benefitSchemes.forEach(scheme => {
+        let eligible = true;
+        let reasons = [];
+        if (scheme.maxLandLimit && selectedRecord.areaAcres > scheme.maxLandLimit) {
+          eligible = false;
+          reasons.push(`Land area (${selectedRecord.areaAcres} acres) exceeds maximum limit (${scheme.maxLandLimit} acres)`);
+        }
+        if (scheme.minLandLimit && selectedRecord.areaAcres < scheme.minLandLimit) {
+          eligible = false;
+          reasons.push(`Land area (${selectedRecord.areaAcres} acres) below minimum requirement (${scheme.minLandLimit} acres)`);
+        }
+        if (selectedRecord.claimStatus !== 'approved') {
+          eligible = false;
+          reasons.push('Land claim must be approved first');
+        }
+        if (scheme.schemeCode === 'PM_KISAN' && selectedRecord.landType !== 'agricultural') {
+          eligible = false;
+          reasons.push('PM Kisan requires agricultural land');
+        }
+        eligibilityResults[scheme.id] = { eligible, reasons };
+      });
+      renderSchemes();
+    }
+    function renderSchemes() {
+      const el = document.getElementById('schemeResults');
+      if (!selectedRecord) { el.innerHTML = ''; return; }
+      el.innerHTML = benefitSchemes.map(scheme => {
+        const result = eligibilityResults[scheme.id];
+        if (!result) {
+          return `<div class='dss-scheme'><div><strong>${scheme.schemeName}</strong> <span class='dss-badge'>${scheme.schemeCode}</span><div style='color:var(--text-muted);font-size:0.95rem;'>${scheme.description}</div></div><div><span class='dss-badge'>Unknown</span></div></div>`;
+        }
+        return `<div class='dss-scheme ${result.eligible ? 'eligible' : 'not-eligible'}'><div><strong>${scheme.schemeName}</strong> <span class='dss-badge'>${scheme.schemeCode}</span><div style='color:var(--text-muted);font-size:0.95rem;'>${scheme.description}</div><div style='color:var(--text-muted);font-size:0.9rem;margin-top:0.5rem;'>${result.reasons.length ? result.reasons.join('; ') : ''}</div></div><div><span class='dss-badge ${result.eligible ? 'approved' : 'rejected'}'>${result.eligible ? 'Eligible' : 'Not Eligible'}</span>${result.eligible ? `<div class='dss-apply'><button style='padding:0.5rem 1rem;border-radius:var(--radius-md);background:var(--primary);color:#fff;border:none;cursor:pointer;'>Apply Now</button></div>` : ''}</div></div>`;
+      }).join('');
+    }
+    // Initial render
+    renderRecords();
+    renderDetails();
+  </script>
+</body>
 </html>
-
